@@ -13,7 +13,6 @@ const signToken = (users, exp) => {
     exp: exp, //Math.floor(Date.now() / 1000) + (60*60*12) 1h =60*60
   },
     key.secretkey, {
-
   }
   );
 };
@@ -30,7 +29,7 @@ const refreshToken = (users, exp) => {
 
 module.exports = {
   currentUser: async (req, res, next) => {
-    const user = await User.findById(req.user._id).populate("shopId")
+    const user = await User.findById(req.user._id)
     res.json(user)
   },
   deleteUser: async (req, res, next) => {
@@ -93,8 +92,8 @@ module.exports = {
   login: async (user, res, next) => {
 
     try {
-      const expToken = Math.floor(Date.now()) + (config.timeExpToken * 1000)
-      const expRefreshToken = Math.floor(Date.now()) + (config.timeExpRefreshtoken * 1000)
+      const expToken = Math.floor(Date.now()) + (key.timeExpToken * 1000)
+      const expRefreshToken = Math.floor(Date.now()) + (key.timeExpRefreshtoken * 1000)
       const token = signToken(user, expToken)
       const refreshtoken = refreshToken(user, expRefreshToken)
 
@@ -102,8 +101,8 @@ module.exports = {
         token: token,
         user: user,
         refreshToken: refreshtoken,
-        expToken: config.timeExpToken,
-        expRefreshToken: config.timeExpRefreshtoken
+        expToken: key.timeExpToken,
+        expRefreshToken: key.timeExpRefreshtoken
       })
 
     } catch (error) {
@@ -131,17 +130,7 @@ module.exports = {
     }
     res.json(updateuser)
   }
-  // getFromRedis: async (req, res, next) => {
-  //   clientredis.get(req.body.email, (err, data) => {
-  //     if (err) throw err;
-  //     if (data !== null || undefined) {
-  //       res.status(200).json({
-  //         refreshToken: data
-  //       })
-  //     } else {
-  //       next()
-  //     }
-  //   })
+
 
 
 

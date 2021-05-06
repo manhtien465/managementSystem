@@ -20,6 +20,5 @@ const ServicesSchema = new Schema({
 ItemSchema.index({ name: 'text', desc: 'text' })
 
 
-
-const Items = mongoose.model("items", ItemSchema)
+const Items = mongoose.model("items", ServicesSchema)
 module.exports = Items

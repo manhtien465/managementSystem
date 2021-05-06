@@ -28,6 +28,7 @@ var userSchema = new Schema({
     rank: {
         type: Schema.Types.ObjectId,
         ref: "GroupsUsers"
+
     },
     isBan: {
         type: Boolean,

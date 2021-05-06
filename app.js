@@ -4,8 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require("mongoose")
-var indexRouter = require('./routes/productRoute');
+var productRouter = require('./routes/productRoute');
 var usersRouter = require('./routes/usersRoute');
+var categoryRouter = require("./routes/categoryRoute")
+var groupRouter = require("./routes/groupRoute")
 const MONGO_Options = require("./config/db")
 
 //connect mongodb
@@ -31,9 +33,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/product', indexRouter);
+app.use('/product', productRouter);
 app.use('/users', usersRouter);
-
+app.use("/category", categoryRouter)
+app.use("/group", groupRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

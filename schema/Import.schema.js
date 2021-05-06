@@ -11,7 +11,6 @@ var ImportSchema = new Schema({
     type: Number,
     require: true
   }
-
 },
   {
     timestamps: true,

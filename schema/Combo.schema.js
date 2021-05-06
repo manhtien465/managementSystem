@@ -6,7 +6,7 @@ var ComboSchema = new Schema({
   name: {
     type: String,
   },
-  product: {
+  productId: {
     type: Schema.Types.ObjectId,
     ref: "products"
   },

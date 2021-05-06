@@ -15,10 +15,10 @@ const ProductsSchema = new Schema({
     type: Number,
     default: 0
   },
-  service: {
+  services: [{
     type: Schema.Types.ObjectId,
     ref: "Services"
-  },
+  }],
   combo: [{
     type: Schema.Types.ObjectId,
     ref: "combo"
@@ -27,7 +27,7 @@ const ProductsSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "categories"
   }],
-  image: [],
+  images: [],
   desccription: {
     type: String,
 
