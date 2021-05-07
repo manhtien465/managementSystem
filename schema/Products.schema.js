@@ -7,28 +7,46 @@ const ProductsSchema = new Schema({
     type: String,
     required: true
   },
+  sku: {
+    type: String
+  },
+  barCode: {
+    type: String
+  },
   price: {
     type: Number,
     required: true
   },
+  location: [{
+    type: String,
+    require: true
+  }],
   discount: {
     type: Number,
     default: 0
   },
+  models: [{
+    type: Schema.Types.ObjectId,
+    ref: "models"
+  }],
   services: [{
     type: Schema.Types.ObjectId,
-    ref: "Services"
+    ref: "services"
   }],
   combo: [{
     type: Schema.Types.ObjectId,
-    ref: "combo"
+    ref: "Combo"
   }],
   category: [{
     type: Schema.Types.ObjectId,
     ref: "categories"
   }],
+  warehouseId: {
+    type: Schema.Types.ObjectId,
+    ref: "warehouse"
+  },
   images: [],
-  desccription: {
+  description: {
     type: String,
 
   },
@@ -40,8 +58,17 @@ const ProductsSchema = new Schema({
     required: false,
     default: 0
   },
-
-  stock: {
+  unit: {
+    type: String,
+    require: true,
+  },
+  weight: {
+    type: String
+  },
+  costPrice: {
+    type: String
+  },
+  quantity: {
     type: Number,
     required: true,
     default: 0
@@ -53,4 +80,4 @@ const ProductsSchema = new Schema({
 
 )
 
-module.exports = ProductsSchema
+module.exports = mongoose.model("products", ProductsSchema)

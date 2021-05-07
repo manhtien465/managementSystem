@@ -4,12 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require("mongoose")
-var productRouter = require('./routes/productRoute');
-var usersRouter = require('./routes/usersRoute');
-var categoryRouter = require("./routes/categoryRoute")
-var groupRouter = require("./routes/groupRoute")
+var router = require("./routes/indexRoute")
 const MONGO_Options = require("./config/db")
-
+const importdata = require("./seed")
 //connect mongodb
 const connect = mongoose.connect(MONGO_Options.MONGO_URI || "mongodb://localhost/shopping", {
   useNewUrlParser: true,
@@ -17,6 +14,7 @@ const connect = mongoose.connect(MONGO_Options.MONGO_URI || "mongodb://localhost
   useUnifiedTopology: true
 })
   .then(() => {
+    // importdata()
     console.log("connect MongoDb")
   })
   .catch(err => console.log(err)
@@ -33,10 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/product', productRouter);
-app.use('/users', usersRouter);
-app.use("/category", categoryRouter)
-app.use("/group", groupRouter)
+router(app);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

@@ -1,13 +1,9 @@
 const User = require("../schema/users.schema")
-const fs = require("fs")
 const Product = require("../schema/Products.schema");
-
-// const Model = require("../schema/models.schema");
-// const Tier_variation = require("../schema/tier_variations.schema")
-
-// { v4: uuidv4 } = require('uuid');
 const Combo = require("../schema/Combo.schema");
-const Services = require("../schema/Services.shema")
+const Services = require("../schema/Services.shema");
+const Model = require("../schema/Model.schema");
+
 module.exports = {
 
   getItems: async (req, res, next) => {
@@ -22,7 +18,7 @@ module.exports = {
   getone: async (req, res, next) => {
     const { id } = req.params
     console.log(id);
-    const item = await Product.findById(id).populate("models").populate("category").populate("tier_variations")
+    const item = await Product.findById(id).populate("services").populate("combo").populate("categories")
     res.json(item)
   },
 
@@ -33,13 +29,26 @@ module.exports = {
   */
   addItem: async (req, res, next) => {
 
-    let { price, name, desc, category, discount, stock, attributes, images, combo, services } = req.body
+    let { price, productCode, barCode, name, description, category, discount, models, attributes, images, combo, services, warehouseId, sku, location, unit, costPrice, quantity } = req.body
 
     let newServices = []
     let newCombo = []
+    let newModel = []
+
     const newitem = new Product({
-      price, discount, name, desc, stock, category, attributes, images, services, combo: newCombo
+      price, discount, productCode, barCode, name, description, category, attributes, images, services, combo: newCombo, warehouseId, sku, location, unit, costPrice, quantity
     })
+
+    if (models) {
+      models.map((v, i) => {
+
+        v.productId = newitem._id
+      })
+      let insertModel = await Model.insertMany(models)
+      insertModel.map((v, i) => {
+        newModel.push(v._id)
+      })
+    }
     if (combo) {
       combo.map((v, i) => {
 
@@ -53,10 +62,6 @@ module.exports = {
     if (services) {
       services.map((v, i) => {
         services.itemId = newitem._id
-
-        // let newtier_variation = new Tier_variation({
-        //     ...v
-        // })
       })
       let insertManyServices = await Services.insertMany(services)
 
@@ -64,8 +69,9 @@ module.exports = {
         newServices.push(v._id)
       })
     }
-    newitem.combo = newmodel
+    newitem.combo = newCombo
     newitem.services = newServices
+    newitem.models = newModel
     await newitem.save()
 
     res.json({ item: newitem, msg: "Add succesful !!!" })
@@ -75,7 +81,7 @@ module.exports = {
   updateItem: async (req, res, next) => {
 
     let {
-      id, price, discount
+      id
     } = req.body
 
     const itemsupdate = await Product.findByIdAndUpdate(id,
@@ -103,13 +109,14 @@ module.exports = {
 
     try {
       const product = await Product.findById(id)
-      if (!items) {
+      if (!product) {
         return res.json({
           msg: "item not found"
         })
       }
 
       await product.remove();
+      const models = await Model.deleteMany({ productId: id })
       const combo = await Combo.deleteMany({ productId: id })
       const services = await Services.deleteMany({ productId: id })
       res.json({
@@ -117,7 +124,8 @@ module.exports = {
       })
 
     } catch (error) {
-      res.json({ msg: "some problem" })
+      console.log(error);
+      res.status(400).json({ msg: "some problem" })
     }
   }
 }

@@ -6,6 +6,9 @@ const OrdersSchema = new Schema({
     required: true,
     ref: "products"
   },
+  attributes: {
+    type: Object
+  },
   number: {
     type: Number,
     required: true,
@@ -14,26 +17,23 @@ const OrdersSchema = new Schema({
     type: String,
     required: true
   },
-  addresses: {
-    address: {
-      type: String,
-    },
-    city: {
-      type: String,
-    },
-    district: {
-      type: String
-    },
-    state: {
-      type: String
-    },
-    phoneNumber: {
-      type: Number,
-    }
+
+  address: {
+    type: String,
   },
+
+  phoneNumber: {
+    type: Number,
+  },
+
   totalPrice: {
     type: Number,
     required: true
+  },
+  status: {
+    type: String,
+    enum: ["PENDING", "SHIPPING", "CANCEL", "FINISH"],
+    default: "PENDING",
   },
   phoneNumber: {
     type: String,

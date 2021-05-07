@@ -6,19 +6,22 @@ const ServicesSchema = new Schema({
     required: true
   },
   desc: {
-    type: Number,
+    type: String,
     required: true
   },
   price: {
     type: Number,
     required: true
+  },
+  productId: {
+    type: Schema.Types.ObjectId
   }
 
 },
   { timestamps: true },
 )
-ItemSchema.index({ name: 'text', desc: 'text' })
 
 
-const Items = mongoose.model("items", ServicesSchema)
+
+const Items = mongoose.model("services", ServicesSchema)
 module.exports = Items

@@ -14,6 +14,10 @@ var ComboSchema = new Schema({
     type: Number,
     require: true,
     default: 1
+  },
+  price: {
+    type: Number,
+    require: true
   }
 
 },

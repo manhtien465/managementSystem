@@ -10,7 +10,17 @@ var ImportSchema = new Schema({
   quantity: {
     type: Number,
     require: true
-  }
+  },
+  price: {
+    type: Number,
+    require: true
+  },
+  unit: {
+    type: String,
+    require: true
+  },
+
+
 },
   {
     timestamps: true,

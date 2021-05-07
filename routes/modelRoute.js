@@ -1,35 +1,23 @@
 var express = require('express');
 var router = express.Router();
+const ModelsController = require("../controller/modelsController")
 const passport = require("passport")
 const passportConf = require('../passport');
-const ProductController = require("../controller/productController")
-const validator = require('express-joi-validation').createValidator({})
 const { authorize } = require('../middleware/auth');
+
 /* GET home page. */
-router.post("/create",
+router.post('/add',
   passport.authenticate("jwt", { session: false }),
   authorize("ADMIN", "SUPERADMIN"),
-  ProductController.addItem
-)
+  ModelsController.add)
 router.put("/update",
   passport.authenticate("jwt", { session: false }),
   authorize("ADMIN", "SUPERADMIN"),
-  ProductController.updateItem
+  ModelsController.update
 )
 router.delete("/delete/:id",
   passport.authenticate("jwt", { session: false }),
-  authorize(["ADMIN", "SUPERADMIN"]),
-  ProductController.deleteItem
-)
-router.get("/get/one/:id",
-  passport.authenticate("jwt", { session: false }),
   authorize("ADMIN", "SUPERADMIN"),
-  ProductController.getone
+  ModelsController.delete
 )
-router.get("/get/all",
-  passport.authenticate("jwt", { session: false }),
-  authorize("CUSTOMER", "ADMIN", "SUPERADMIN"),
-  ProductController.getItems
-)
-
 module.exports = router;

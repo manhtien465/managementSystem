@@ -22,7 +22,7 @@ var userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ["CUSTOMER", "ADMIN", "SHOPOWNER", "COLLABORATOR"],
+        enum: ["CUSTOMER", "ADMIN", "SUPERADMIN", "COLLABORATOR"],
         default: "CUSTOMER",
     },
     rank: {
@@ -44,9 +44,8 @@ var userSchema = new Schema({
         default: "2000-01-01"
     },
     phoneNumber: {
-        type: Number,
-        required: true,
-        default: 0
+        type: String,
+
     },
     avatar: {
         type: String
@@ -65,9 +64,13 @@ var userSchema = new Schema({
             type: String
         },
         phoneNumber: {
-            type: Number,
+            type: String,
         }
     }],
+    totalMoneySpend: {
+        type: Number,
+        default: 0
+    }
 
 },
     {
